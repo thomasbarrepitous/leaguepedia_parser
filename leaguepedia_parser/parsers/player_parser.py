@@ -84,7 +84,7 @@ class PlayerInfo:
     
     # Location fields
     country: Optional[str] = None
-    nationality: List[str] = []
+    nationality: List[str] = dataclasses.field(default_factory=list)
     nationality_primary: Optional[str] = None
     residency: Optional[str] = None
     residency_former: Optional[str] = None
@@ -97,20 +97,20 @@ class PlayerInfo:
     # Team fields
     team: Optional[str] = None
     team2: Optional[str] = None
-    current_teams: List[str] = []
+    current_teams: List[str] = dataclasses.field(default_factory=list)
     team_system: Optional[str] = None
     team2_system: Optional[str] = None
     team_last: Optional[str] = None
     
     # Role fields
     role: Optional[str] = None
-    role_last: List[str] = []
+    role_last: List[str] = dataclasses.field(default_factory=list)
     
     # Contract dates
     contract: Optional[datetime.date] = None
     
     # Game data
-    fav_champs: List[str] = []
+    fav_champs: List[str] = dataclasses.field(default_factory=list)
     soloqueue_ids: Optional[str] = None
     
     # Social media & profiles
@@ -158,8 +158,8 @@ def is_active(player: PlayerInfo) -> bool:
         player.to_valorant
     ])
 
-def _parse_player_data(data: dict, requested_fields: set) -> PlayerInfo:
-    """Parses raw API response data into a PlayerInfo object with only requested fields."""
+def _parse_player_data(data: dict) -> PlayerInfo:
+    """Parses raw API response data into a complete PlayerInfo object."""
     
     # Date parsing helper
     def parse_date(date_str: Optional[str]) -> Optional[datetime.date]:
@@ -178,9 +178,9 @@ def _parse_player_data(data: dict, requested_fields: set) -> PlayerInfo:
     def parse_bool(field: Optional[str]) -> Optional[bool]:
         return field == 'Yes' if field else None
 
-    # Only parse fields that exist in the data and were requested
+    # Simplified to always get the field from data
     def get_field(field_name: str, default=None):
-        return data.get(field_name) if field_name in requested_fields else None
+        return data.get(field_name, default)
 
     return PlayerInfo(
         # Identification
@@ -256,14 +256,13 @@ def _parse_player_data(data: dict, requested_fields: set) -> PlayerInfo:
         is_low_content=parse_bool(get_field('IsLowContent'))
     )
 
-def get_player(player_name: str, fields: List[str] = None) -> PlayerInfo:
+def get_player(player_name: str) -> PlayerInfo:
     """
     Retrieves comprehensive player information from Leaguepedia's Players table.
     https://lol.fandom.com/wiki/Special:CargoTables/Players
     
     Args:
         player_name (str): Exact player name as stored in Leaguepedia's 'Player' field
-        fields (List[str], optional): List of fields to retrieve. If None, retrieves all fields.
         
     Returns:
         PlayerInfo: Dataclass containing all available player information
@@ -273,8 +272,8 @@ def get_player(player_name: str, fields: List[str] = None) -> PlayerInfo:
         RuntimeError: If there's an error querying Leaguepedia
     """
     try:
-        query_fields = _build_query_fields(fields)
-        requested_fields = set(field.replace('P.', '') for field in query_fields.split(','))
+        # Always query all fields
+        query_fields = ",".join(f"P.{f}" for f in _FULL_QUERY_FIELDS)
         
         query = leaguepedia.query(
             tables="Players=P",
@@ -285,7 +284,8 @@ def get_player(player_name: str, fields: List[str] = None) -> PlayerInfo:
         if not query:
             raise ValueError(f"Player '{player_name}' not found in Leaguepedia database")
 
-        return _parse_player_data(query[0], requested_fields)
+        # Parse all fields without filtering
+        return _parse_player_data(query[0])
         
     except Exception as e:
         raise RuntimeError(f"Failed to fetch player data for {player_name}: {str(e)}")
@@ -302,16 +302,4 @@ _FULL_QUERY_FIELDS = [
     "IsRetired", "ToWildrift", "ToValorant", "IsPersonality", "IsSubstitute",
     "IsTrainee", "IsLowercase", "IsAutoTeam", "IsLowContent"
 ]
-
-def _build_query_fields(fields: List[str] = None) -> str:
-    """Validates and formats fields for Cargo API query"""
-    if not fields:
-        return ",".join(f"P.{f}" for f in _FULL_QUERY_FIELDS)
-    
-    # Filter and format valid fields
-    valid_fields = [f for f in fields if f in _FULL_QUERY_FIELDS]
-    if not valid_fields:
-        raise ValueError("No valid fields specified")
-        
-    return ",".join(f"P.{f}" for f in valid_fields)
 
