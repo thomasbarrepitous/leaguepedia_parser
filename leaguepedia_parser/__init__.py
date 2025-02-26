@@ -12,5 +12,5 @@ from leaguepedia_parser.parsers.team_parser import (
     get_all_team_assets
 )
 from leaguepedia_parser.parsers.player_parser import (
-    get_player,
+    get_player_by_name,
 )

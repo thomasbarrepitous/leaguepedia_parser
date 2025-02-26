@@ -4,7 +4,7 @@ from leaguepedia_parser.site.leaguepedia import leaguepedia
 import datetime
 import enum
 
-# Will rewrite this parser with Mixins someday. someday.
+# Will rewrite this parser with Mixins or something more modular when I have more time.
 
 class PlayerStatus(enum.Enum):
     ACTIVE = 0
@@ -256,7 +256,7 @@ def _parse_player_data(data: dict) -> PlayerInfo:
         is_low_content=parse_bool(get_field('IsLowContent'))
     )
 
-def get_player(player_name: str) -> PlayerInfo:
+def get_player_by_name(player_name: str) -> PlayerInfo:
     """
     Retrieves comprehensive player information from Leaguepedia's Players table.
     https://lol.fandom.com/wiki/Special:CargoTables/Players
