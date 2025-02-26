@@ -1,8 +1,8 @@
 [tool.poetry]
-name = "leaguepedia_parser"
-version = "2.0.2"
-description = "A parser for Leaguepedia data"
-authors = ["Tolki <gary.mialaret@gmail.com>"]
+name = "leaguepedia_parser_thomasbarrepitous"
+version = "0.0.1"
+description = "A fork of Tolki's parser for Leaguepedia data."
+authors = ["ThomasBP <barrepitousthomas@gmail.com>", "Tolki <gary.mialaret@gmail.com>"]
 license = "MIT"
 repository = "https://github.com/mrtolkien/leaguepedia_parser"
 
