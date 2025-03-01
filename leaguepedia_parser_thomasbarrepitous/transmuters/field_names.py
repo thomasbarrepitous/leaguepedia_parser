@@ -93,3 +93,20 @@ picks_bans_fields = [
     "Team1Pick5",
     "Team2Pick5",
 ]
+
+# Tournament Rosters
+tournament_rosters_fields = {
+    "Team",
+    "OverviewPage",
+    "Region",
+    "RosterLinks",
+    "Roles",
+    "Flags",
+    "Footnotes",
+    "IsUsed",
+    "Tournament",
+    "Short",
+    "IsComplete",
+    "PageAndTeam",
+    "UniqueLine"
+}

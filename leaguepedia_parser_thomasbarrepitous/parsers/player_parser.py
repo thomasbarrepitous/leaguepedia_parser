@@ -1,6 +1,6 @@
 import dataclasses
 from typing import Optional, List
-from leaguepedia_parser.site.leaguepedia import leaguepedia
+from leaguepedia_parser_thomasbarrepitous.site.leaguepedia import leaguepedia
 import datetime
 import enum
 
