@@ -61,20 +61,20 @@ def get_tournaments(
         is_playoffs = 1 if is_playoffs else 0
 
     # This generates the WHERE part of the cargoquery
-    where = " AND ".join(
-        [
-            # One constraint per variable
-            f"Tournaments.{field_name}='{value}'"
-            for field_name, value in [
-                ("Region", region),
-                ("Year", year),
-                ("TournamentLevel", tournament_level),
-                ("IsPlayoffs", is_playoffs),
-            ]
-            # We don’t filter on variables that are None
-            if value is not None
-        ]
-    )
+    where_conditions = []
+    for field_name, value in [
+        ("Region", region),
+        ("Year", year),
+        ("TournamentLevel", tournament_level),
+        ("IsPlayoffs", is_playoffs),
+    ]:
+        # We don't filter on variables that are None
+        if value is not None:
+            # Escape single quotes by doubling them to prevent SQL injection
+            escaped_value = str(value).replace("'", "''")
+            where_conditions.append(f"Tournaments.{field_name}='{escaped_value}'")
+    
+    where = " AND ".join(where_conditions)
 
     result = leaguepedia.query(
         tables="Tournaments, Leagues",

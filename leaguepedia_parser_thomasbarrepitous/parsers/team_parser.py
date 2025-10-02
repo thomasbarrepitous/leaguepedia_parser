@@ -208,16 +208,24 @@ def _get_team_asset(asset_name: str, team_name: str, _retry=True) -> str:
 
     try:
         url = None
-        pages = result.get("query").get("pages")
+        pages = result.get("query", {}).get("pages", {})
         for k, v in pages.items():
-            url = v.get("imageinfo")[0].get("url")
+            imageinfo = v.get("imageinfo")
+            if imageinfo and len(imageinfo) > 0:
+                url = imageinfo[0].get("url")
+                break
 
-    except (TypeError, AttributeError):
+    except (TypeError, AttributeError, IndexError, KeyError) as e:
         # This happens when the team name was not properly understood.
         if _retry:
-            return get_team_logo(get_long_team_name_from_trigram(team_name), False)
+            # Prevent infinite recursion by checking if we're already using the long name
+            long_name = get_long_team_name_from_trigram(team_name)
+            if long_name and long_name != team_name:
+                return _get_team_asset(asset_name.replace(team_name, long_name), long_name, False)
+            else:
+                raise ValueError(f"Unable to resolve team name '{team_name}' to a valid team")
         else:
-            raise Exception("Logo not found for the given team name")
+            raise ValueError(f"Logo not found for team '{team_name}': {str(e)}")
 
     return url
 
