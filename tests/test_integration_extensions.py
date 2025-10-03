@@ -109,8 +109,8 @@ class TestComplexQueryScenarios:
         
         # Verify all filters are applied
         assert f"Team='{TestConstants.TEAM_T1}'" in call_kwargs['where']
-        assert "Date >= '2013-01-01'" in call_kwargs['where']
-        assert "Date <= '2013-12-31'" in call_kwargs['where']
+        assert "Date_Sort >= '2013-01-01'" in call_kwargs['where']
+        assert "Date_Sort <= '2013-12-31'" in call_kwargs['where']
 
 
 class TestDataConsistency:

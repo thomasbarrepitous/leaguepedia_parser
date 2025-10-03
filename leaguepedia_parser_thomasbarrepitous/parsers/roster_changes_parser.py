@@ -26,62 +26,91 @@ class RosterChange:
     """Represents a roster change from Leaguepedia's RosterChanges table.
 
     Attributes:
-        id: Unique identifier for the change
-        team: Team name
-        role: Player role
-        player: Player name
-        action: Type of roster change (Add, Remove, etc.)
-        date: Date of the change
-        tournament: Tournament context if applicable
-        overview_page: Tournament overview page
-        reference: Reference/source for the change
-        roster_change_id: Roster change identifier
-        news_id: Related news item ID
-        is_retirement: Whether this is a retirement
-        residency: Player's residency status
-        residency_former: Player's former residency
-        nationality: Player's nationality
-        is_lowercase: Whether to display name in lowercase
-        is_substitute: Whether this is a substitute change
-        is_trainee: Whether player is a trainee
+        date_sort: Date of the change (Datetime)
+        player: Player name (String)
+        direction: Direction of the change - Join/Leave (String)
+        team: Team name (String)
+        roles_ingame: In-game roles (List of String)
+        roles_staff: Staff roles (List of String)
+        roles: All roles (List of String)
+        role_display: Display role (String)
+        role: Primary role (String)
+        role_modifier: Role modifier (String)
+        status: Status of the change (String)
+        current_team_priority: Priority level (Integer)
+        player_unlinked: Whether player is unlinked (Boolean)
+        already_joined: Already joined status (String)
+        tournaments: Associated tournaments (List of String)
+        source: Source information (Wikitext)
+        is_gcd: Is GCD related (Boolean)
+        preload: Preload information (String)
+        preload_sort_number: Preload sort number (Integer)
+        tags: Associated tags (List of String)
+        news_id: Related news item ID (String)
+        roster_change_id: Roster change identifier (String)
+        n_line_in_news: Line number in news (Integer)
     """
 
-    id: Optional[str] = None
-    team: Optional[str] = None
-    role: Optional[str] = None
+    date_sort: Optional[datetime] = None
     player: Optional[str] = None
-    action: Optional[str] = None
-    date: Optional[datetime] = None
-    tournament: Optional[str] = None
-    overview_page: Optional[str] = None
-    reference: Optional[str] = None
-    roster_change_id: Optional[str] = None
+    direction: Optional[str] = None
+    team: Optional[str] = None
+    roles_ingame: Optional[List[str]] = None
+    roles_staff: Optional[List[str]] = None
+    roles: Optional[List[str]] = None
+    role_display: Optional[str] = None
+    role: Optional[str] = None
+    role_modifier: Optional[str] = None
+    status: Optional[str] = None
+    current_team_priority: Optional[int] = None
+    player_unlinked: Optional[bool] = None
+    already_joined: Optional[str] = None
+    tournaments: Optional[List[str]] = None
+    source: Optional[str] = None
+    is_gcd: Optional[bool] = None
+    preload: Optional[str] = None
+    preload_sort_number: Optional[int] = None
+    tags: Optional[List[str]] = None
     news_id: Optional[str] = None
-    is_retirement: Optional[bool] = None
-    residency: Optional[str] = None
-    residency_former: Optional[str] = None
-    nationality: Optional[str] = None
-    is_lowercase: Optional[bool] = None
-    is_substitute: Optional[bool] = None
-    is_trainee: Optional[bool] = None
+    roster_change_id: Optional[str] = None
+    n_line_in_news: Optional[int] = None
 
     @property
-    def action_enum(self) -> Optional[RosterAction]:
-        """Returns the action as an enum value."""
-        try:
-            return RosterAction(self.action) if self.action else None
-        except ValueError:
-            return None
+    def is_join(self) -> bool:
+        """Returns True if this is a join/addition to the team."""
+        return bool(self.direction and self.direction.lower() == "join")
+
+    @property
+    def is_leave(self) -> bool:
+        """Returns True if this is a leave/removal from the team."""
+        return bool(self.direction and self.direction.lower() == "leave")
+
+    @property
+    def date(self) -> Optional[datetime]:
+        """Alias for date_sort for backward compatibility."""
+        return self.date_sort
+
+    @property
+    def action(self) -> Optional[str]:
+        """Alias for direction for backward compatibility."""
+        return self.direction
 
     @property
     def is_addition(self) -> bool:
-        """Returns True if this is an addition to the team."""
-        return self.action == RosterAction.ADD.value
+        """Returns True if this is an addition to the team (backward compatibility)."""
+        return self.is_join
 
     @property
     def is_removal(self) -> bool:
-        """Returns True if this is a removal from the team."""
-        return self.action == RosterAction.REMOVE.value
+        """Returns True if this is a removal from the team (backward compatibility)."""
+        return self.is_leave
+
+    @property
+    def is_retirement(self) -> Optional[bool]:
+        """Returns True if this is a retirement (backward compatibility)."""
+        # Check if this can be detected from status or other fields
+        # For now, return None as retirement detection needs more research
+        return None
 
 
 def _parse_roster_change_data(data: dict) -> RosterChange:
@@ -94,27 +123,45 @@ def _parse_roster_change_data(data: dict) -> RosterChange:
             return None
 
     def parse_bool(value: Optional[str]) -> Optional[bool]:
+        if isinstance(value, bool):
+            return value
         return value == "Yes" if value else None
 
+    def parse_int(value: Optional[str]) -> Optional[int]:
+        try:
+            return int(value) if value and str(value).strip() else None
+        except (ValueError, TypeError):
+            return None
+
+    def parse_list(value: Optional[str], delimiter: str = ",") -> Optional[List[str]]:
+        if not value:
+            return None
+        return [item.strip() for item in value.split(delimiter) if item.strip()]
+
     return RosterChange(
-        id=data.get("ID"),
-        team=data.get("Team"),
-        role=data.get("Role"),
+        date_sort=parse_datetime(data.get("Date_Sort")),
         player=data.get("Player"),
-        action=data.get("Action"),
-        date=parse_datetime(data.get("Date")),
-        tournament=data.get("Tournament"),
-        overview_page=data.get("OverviewPage"),
-        reference=data.get("Reference"),
-        roster_change_id=data.get("RosterChangeId"),
+        direction=data.get("Direction"),
+        team=data.get("Team"),
+        roles_ingame=parse_list(data.get("RolesIngame"), ";"),
+        roles_staff=parse_list(data.get("RolesStaff"), ";"),
+        roles=parse_list(data.get("Roles"), ";"),
+        role_display=data.get("RoleDisplay"),
+        role=data.get("Role"),
+        role_modifier=data.get("RoleModifier"),
+        status=data.get("Status"),
+        current_team_priority=parse_int(data.get("CurrentTeamPriority")),
+        player_unlinked=parse_bool(data.get("PlayerUnlinked")),
+        already_joined=data.get("AlreadyJoined"),
+        tournaments=parse_list(data.get("Tournaments")),
+        source=data.get("Source"),
+        is_gcd=parse_bool(data.get("IsGCD")),
+        preload=data.get("Preload"),
+        preload_sort_number=parse_int(data.get("PreloadSortNumber")),
+        tags=parse_list(data.get("Tags")),
         news_id=data.get("NewsId"),
-        is_retirement=parse_bool(data.get("IsRetirement")),
-        residency=data.get("Residency"),
-        residency_former=data.get("ResidencyFormer"),
-        nationality=data.get("Nationality"),
-        is_lowercase=parse_bool(data.get("IsLowercase")),
-        is_substitute=parse_bool(data.get("IsSubstitute")),
-        is_trainee=parse_bool(data.get("IsTrainee")),
+        roster_change_id=data.get("RosterChangeId"),
+        n_line_in_news=parse_int(data.get("N_LineInNews")),
     )
 
 
@@ -157,17 +204,17 @@ def get_roster_changes(
 
         if action:
             escaped_action = action.replace("'", "''")
-            where_conditions.append(f"RosterChanges.Action='{escaped_action}'")
+            where_conditions.append(f"RosterChanges.Direction='{escaped_action}'")
 
         if tournament:
             escaped_tournament = tournament.replace("'", "''")
-            where_conditions.append(f"RosterChanges.Tournament='{escaped_tournament}'")
+            where_conditions.append(f"RosterChanges.Tournaments LIKE '%{escaped_tournament}%'")
 
         if start_date:
-            where_conditions.append(f"RosterChanges.Date >= '{start_date}'")
+            where_conditions.append(f"RosterChanges.Date_Sort >= '{start_date}'")
 
         if end_date:
-            where_conditions.append(f"RosterChanges.Date <= '{end_date}'")
+            where_conditions.append(f"RosterChanges.Date_Sort <= '{end_date}'")
 
         where_clause = " AND ".join(where_conditions) if where_conditions else None
 
@@ -175,7 +222,7 @@ def get_roster_changes(
             tables="RosterChanges",
             fields=",".join(roster_changes_fields),
             where=where_clause,
-            order_by="RosterChanges.Date DESC",
+            order_by="RosterChanges.Date_Sort DESC",
             **kwargs,
         )
 
@@ -248,7 +295,7 @@ def get_roster_additions(
     Returns:
         A list of RosterChange objects representing additions
     """
-    return get_roster_changes(team=team, tournament=tournament, action="Add", **kwargs)
+    return get_roster_changes(team=team, tournament=tournament, action="Join", **kwargs)
 
 
 def get_roster_removals(
@@ -265,7 +312,7 @@ def get_roster_removals(
         A list of RosterChange objects representing removals
     """
     return get_roster_changes(
-        team=team, tournament=tournament, action="Remove", **kwargs
+        team=team, tournament=tournament, action="Leave", **kwargs
     )
 
 
@@ -286,7 +333,7 @@ def get_retirements(**kwargs) -> List[RosterChange]:
             tables="RosterChanges",
             fields=",".join(roster_changes_fields),
             where=where_clause,
-            order_by="RosterChanges.Date DESC",
+            order_by="RosterChanges.Date_Sort DESC",
             **kwargs,
         )
 

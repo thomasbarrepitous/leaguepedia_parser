@@ -109,7 +109,7 @@ class TestRosterChanges:
         change = RosterChange(
             team="T1",
             player="Faker",
-            action="Add",
+            direction="Join",
             role="Mid"
         )
         assert change.team == "T1"
