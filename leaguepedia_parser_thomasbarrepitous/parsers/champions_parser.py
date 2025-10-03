@@ -92,7 +92,7 @@ class Champion:
     def attributes_list(self) -> list:
         """Returns attributes as a list."""
         if self.attributes:
-            return [attr.strip() for attr in self.attributes.split(',')]
+            return [attr.strip() for attr in self.attributes.split(',') if attr.strip()]
         return []
 
 

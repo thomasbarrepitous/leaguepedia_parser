@@ -1,6 +1,6 @@
 import dataclasses
 from typing import List, Optional
-from datetime import datetime
+from datetime import datetime, timedelta
 import enum
 
 from leaguepedia_parser_thomasbarrepitous.site.leaguepedia import leaguepedia
@@ -227,8 +227,6 @@ def get_recent_roster_changes(
     Returns:
         A list of recent RosterChange objects
     """
-    from datetime import datetime, timedelta
-
     end_date = datetime.now().strftime("%Y-%m-%d")
     start_date = (datetime.now() - timedelta(days=days)).strftime("%Y-%m-%d")
 
