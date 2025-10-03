@@ -6,16 +6,18 @@ import enum
 
 # Will rewrite this parser with Mixins or something more modular when I have more time.
 
+
 class PlayerStatus(enum.Enum):
     ACTIVE = 0
     RETIRED = 1
     MOVED_TO_WILDRIFT = 2
     MOVED_TO_VALORANT = 3
 
+
 @dataclasses.dataclass
 class PlayerInfo:
     """Represents comprehensive player data from Leaguepedia's Players table.
-    
+
     Attributes:
         id: Unique player identifier from Leaguepedia
         overview_page: The overview page of the player, useful for disambiguation
@@ -70,30 +72,31 @@ class PlayerInfo:
         is_auto_team: The player's auto team status
         is_low_content: The player's low content status
     """
+
     # Identification fields
     id: Optional[str] = None
     overview_page: Optional[str] = None
     player: Optional[str] = None
     image: Optional[str] = None
-    
+
     # Name fields
     name: Optional[str] = None
     native_name: Optional[str] = None
     name_alphabet: Optional[str] = None
     name_full: Optional[str] = None
-    
+
     # Location fields
     country: Optional[str] = None
     nationality: List[str] = dataclasses.field(default_factory=list)
     nationality_primary: Optional[str] = None
     residency: Optional[str] = None
     residency_former: Optional[str] = None
-    
+
     # Demographic fields
     age: Optional[int] = None
     birthdate: Optional[datetime.date] = None
     deathdate: Optional[datetime.date] = None
-    
+
     # Team fields
     team: Optional[str] = None
     team2: Optional[str] = None
@@ -101,18 +104,18 @@ class PlayerInfo:
     team_system: Optional[str] = None
     team2_system: Optional[str] = None
     team_last: Optional[str] = None
-    
+
     # Role fields
     role: Optional[str] = None
     role_last: List[str] = dataclasses.field(default_factory=list)
-    
+
     # Contract dates
     contract: Optional[datetime.date] = None
-    
+
     # Game data
     fav_champs: List[str] = dataclasses.field(default_factory=list)
     soloqueue_ids: Optional[str] = None
-    
+
     # Social media & profiles
     askfm: Optional[str] = None
     bluesky: Optional[str] = None
@@ -130,7 +133,7 @@ class PlayerInfo:
     website: Optional[str] = None
     weibo: Optional[str] = None
     youtube: Optional[str] = None
-    
+
     # Status flags
     is_retired: Optional[bool] = None
     to_wildrift: Optional[bool] = None
@@ -152,31 +155,32 @@ class PlayerInfo:
 
 
 def is_active(player: PlayerInfo) -> bool:
-    return not any([
-        player.is_retired,
-        player.to_wildrift,
-        player.to_valorant
-    ])
+    return not any([player.is_retired, player.to_wildrift, player.to_valorant])
+
 
 def _parse_player_data(data: dict) -> PlayerInfo:
     """Parses raw API response data into a complete PlayerInfo object."""
-    
+
     # Date parsing helper
     def parse_date(date_str: Optional[str]) -> Optional[datetime.date]:
         try:
-            return datetime.datetime.strptime(date_str, "%Y-%m-%d").date() if date_str else None
+            return (
+                datetime.datetime.strptime(date_str, "%Y-%m-%d").date()
+                if date_str
+                else None
+            )
         except ValueError:
             return None
-    
+
     # List parsing helper
-    def parse_list(field: Optional[str], delimiter: str = ',') -> List[str]:
+    def parse_list(field: Optional[str], delimiter: str = ",") -> List[str]:
         if not field:
             return []
         return [item.strip() for item in field.split(delimiter) if item.strip()]
-    
+
     # Handle special boolean fields
     def parse_bool(field: Optional[str]) -> Optional[bool]:
-        return field == 'Yes' if field else None
+        return field == "Yes" if field else None
 
     # Simplified to always get the field from data
     def get_field(field_name: str, default=None):
@@ -184,89 +188,83 @@ def _parse_player_data(data: dict) -> PlayerInfo:
 
     return PlayerInfo(
         # Identification
-        id=get_field('ID'),
-        overview_page=get_field('OverviewPage'),
-        player=get_field('Player'),
-        image=get_field('Image'),
-        
+        id=get_field("ID"),
+        overview_page=get_field("OverviewPage"),
+        player=get_field("Player"),
+        image=get_field("Image"),
         # Names
-        name=get_field('Name'),
-        native_name=get_field('NativeName'),
-        name_alphabet=get_field('NameAlphabet'),
-        name_full=get_field('NameFull'),
-        
+        name=get_field("Name"),
+        native_name=get_field("NativeName"),
+        name_alphabet=get_field("NameAlphabet"),
+        name_full=get_field("NameFull"),
         # Location
-        country=get_field('Country'),
-        nationality=parse_list(get_field('Nationality')),
-        nationality_primary=get_field('NationalityPrimary'),
-        residency=get_field('Residency'),
-        residency_former=get_field('ResidencyFormer'),
-        
+        country=get_field("Country"),
+        nationality=parse_list(get_field("Nationality")),
+        nationality_primary=get_field("NationalityPrimary"),
+        residency=get_field("Residency"),
+        residency_former=get_field("ResidencyFormer"),
         # Demographics
-        age=int(get_field('Age')) if get_field('Age') and get_field('Age').isdigit() else None,
-        birthdate=parse_date(get_field('Birthdate')),
-        deathdate=parse_date(get_field('Deathdate')),
-        
+        age=int(get_field("Age"))
+        if get_field("Age") and get_field("Age").isdigit()
+        else None,
+        birthdate=parse_date(get_field("Birthdate")),
+        deathdate=parse_date(get_field("Deathdate")),
         # Teams
-        team=get_field('Team'),
-        team2=get_field('Team2'),
-        current_teams=parse_list(get_field('CurrentTeams')),
-        team_system=get_field('TeamSystem'),
-        team2_system=get_field('Team2System'),
-        team_last=get_field('TeamLast'),
-        
+        team=get_field("Team"),
+        team2=get_field("Team2"),
+        current_teams=parse_list(get_field("CurrentTeams")),
+        team_system=get_field("TeamSystem"),
+        team2_system=get_field("Team2System"),
+        team_last=get_field("TeamLast"),
         # Roles
-        role=get_field('Role'),
-        role_last=parse_list(get_field('RoleLast'), ';'),
-        
+        role=get_field("Role"),
+        role_last=parse_list(get_field("RoleLast"), ";"),
         # Contract
-        contract=parse_date(get_field('Contract')),
-        
+        contract=parse_date(get_field("Contract")),
         # Game Data
-        fav_champs=parse_list(get_field('FavChamps')),
-        soloqueue_ids=get_field('SoloqueueIds'),
-        
+        fav_champs=parse_list(get_field("FavChamps")),
+        soloqueue_ids=get_field("SoloqueueIds"),
         # Social Media
-        askfm=get_field('Askfm'),
-        bluesky=get_field('Bluesky'),
-        discord=get_field('Discord'),
-        facebook=get_field('Facebook'),
-        instagram=get_field('Instagram'),
-        lolpros=get_field('Lolpros'),
-        reddit=get_field('Reddit'),
-        snapchat=get_field('Snapchat'),
-        stream=get_field('Stream'),
-        twitter=get_field('Twitter'),
-        threads=get_field('Threads'),
-        linkedin=get_field('LinkedIn'),
-        vk=get_field('Vk'),
-        website=get_field('Website'),
-        weibo=get_field('Weibo'),
-        youtube=get_field('Youtube'),
-        
+        askfm=get_field("Askfm"),
+        bluesky=get_field("Bluesky"),
+        discord=get_field("Discord"),
+        facebook=get_field("Facebook"),
+        instagram=get_field("Instagram"),
+        lolpros=get_field("Lolpros"),
+        reddit=get_field("Reddit"),
+        snapchat=get_field("Snapchat"),
+        stream=get_field("Stream"),
+        twitter=get_field("Twitter"),
+        threads=get_field("Threads"),
+        linkedin=get_field("LinkedIn"),
+        vk=get_field("Vk"),
+        website=get_field("Website"),
+        weibo=get_field("Weibo"),
+        youtube=get_field("Youtube"),
         # Status Flags
-        is_retired=parse_bool(get_field('IsRetired')),
-        to_wildrift=parse_bool(get_field('ToWildrift')),
-        to_valorant=parse_bool(get_field('ToValorant')),
-        is_personality=parse_bool(get_field('IsPersonality')),
-        is_substitute=parse_bool(get_field('IsSubstitute')),
-        is_trainee=parse_bool(get_field('IsTrainee')),
-        is_lowercase=parse_bool(get_field('IsLowercase')),
-        is_auto_team=parse_bool(get_field('IsAutoTeam')),
-        is_low_content=parse_bool(get_field('IsLowContent'))
+        is_retired=parse_bool(get_field("IsRetired")),
+        to_wildrift=parse_bool(get_field("ToWildrift")),
+        to_valorant=parse_bool(get_field("ToValorant")),
+        is_personality=parse_bool(get_field("IsPersonality")),
+        is_substitute=parse_bool(get_field("IsSubstitute")),
+        is_trainee=parse_bool(get_field("IsTrainee")),
+        is_lowercase=parse_bool(get_field("IsLowercase")),
+        is_auto_team=parse_bool(get_field("IsAutoTeam")),
+        is_low_content=parse_bool(get_field("IsLowContent")),
     )
+
 
 def get_player_by_name(player_name: str) -> PlayerInfo:
     """
     Retrieves comprehensive player information from Leaguepedia's Players table.
     https://lol.fandom.com/wiki/Special:CargoTables/Players
-    
+
     Args:
         player_name (str): Exact player name as stored in Leaguepedia's 'Player' field
-        
+
     Returns:
         PlayerInfo: Dataclass containing all available player information
-        
+
     Raises:
         ValueError: If player is not found
         RuntimeError: If there's an error querying Leaguepedia
@@ -274,7 +272,7 @@ def get_player_by_name(player_name: str) -> PlayerInfo:
     try:
         # Always query all fields
         query_fields = ",".join(f"P.{f}" for f in _FULL_QUERY_FIELDS)
-        
+
         query = leaguepedia.query(
             tables="Players=P",
             fields=query_fields,
@@ -282,24 +280,69 @@ def get_player_by_name(player_name: str) -> PlayerInfo:
         )
 
         if not query:
-            raise ValueError(f"Player '{player_name}' not found in Leaguepedia database")
+            raise ValueError(
+                f"Player '{player_name}' not found in Leaguepedia database"
+            )
 
         # Parse all fields without filtering
         return _parse_player_data(query[0])
-        
+
     except Exception as e:
         raise RuntimeError(f"Failed to fetch player data for {player_name}: {str(e)}")
 
+
 # Complete list of valid fields from Cargo table
 _FULL_QUERY_FIELDS = [
-    "ID", "OverviewPage", "Player", "Image", "Name", "NativeName",
-    "NameAlphabet", "NameFull", "Country", "Nationality", "NationalityPrimary",
-    "Residency", "ResidencyFormer", "Age", "Birthdate", "Deathdate", "Team",
-    "Team2", "CurrentTeams", "TeamSystem", "Team2System", "TeamLast", "Role",
-    "RoleLast", "Contract", "FavChamps", "SoloqueueIds", "Askfm", "Bluesky",
-    "Discord", "Facebook", "Instagram", "Lolpros", "Reddit", "Snapchat", "Stream",
-    "Twitter", "Threads", "LinkedIn", "Vk", "Website", "Weibo", "Youtube",
-    "IsRetired", "ToWildrift", "ToValorant", "IsPersonality", "IsSubstitute",
-    "IsTrainee", "IsLowercase", "IsAutoTeam", "IsLowContent"
+    "ID",
+    "OverviewPage",
+    "Player",
+    "Image",
+    "Name",
+    "NativeName",
+    "NameAlphabet",
+    "NameFull",
+    "Country",
+    "Nationality",
+    "NationalityPrimary",
+    "Residency",
+    "ResidencyFormer",
+    "Age",
+    "Birthdate",
+    "Deathdate",
+    "Team",
+    "Team2",
+    "CurrentTeams",
+    "TeamSystem",
+    "Team2System",
+    "TeamLast",
+    "Role",
+    "RoleLast",
+    "Contract",
+    "FavChamps",
+    "SoloqueueIds",
+    "Askfm",
+    "Bluesky",
+    "Discord",
+    "Facebook",
+    "Instagram",
+    "Lolpros",
+    "Reddit",
+    "Snapchat",
+    "Stream",
+    "Twitter",
+    "Threads",
+    "LinkedIn",
+    "Vk",
+    "Website",
+    "Weibo",
+    "Youtube",
+    "IsRetired",
+    "ToWildrift",
+    "ToValorant",
+    "IsPersonality",
+    "IsSubstitute",
+    "IsTrainee",
+    "IsLowercase",
+    "IsAutoTeam",
+    "IsLowContent",
 ]
-

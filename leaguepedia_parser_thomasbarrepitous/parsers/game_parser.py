@@ -73,7 +73,7 @@ def get_tournaments(
             # Escape single quotes by doubling them to prevent SQL injection
             escaped_value = str(value).replace("'", "''")
             where_conditions.append(f"Tournaments.{field_name}='{escaped_value}'")
-    
+
     where = " AND ".join(where_conditions)
 
     result = leaguepedia.query(
