@@ -1,10 +1,30 @@
 [tool.poetry]
 name = "leaguepedia_parser_thomasbarrepitous"
 version = "0.0.5"
-description = "A fork of Tolki's parser for Leaguepedia data."
+description = "Comprehensive Leaguepedia parser for League of Legends esports data with enhanced standings, champions, items, and roster tracking"
 authors = ["ThomasBP <barrepitousthomas@gmail.com>", "Tolki <gary.mialaret@gmail.com>"]
 license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/thomasbarrepitous/leaguepedia_parser"
 repository = "https://github.com/thomasbarrepitous/leaguepedia_parser"
+documentation = "https://github.com/thomasbarrepitous/leaguepedia_parser#readme"
+keywords = ["leaguepedia", "league-of-legends", "esports", "data-parser", "gaming", "riot-games", "tournaments", "statistics"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Topic :: Games/Entertainment",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Independent",
+]
 
 [tool.poetry.dependencies]
 python = ">=3.9,<4.0"
