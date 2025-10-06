@@ -1,10 +1,10 @@
 [tool.poetry]
 name = "leaguepedia_parser_thomasbarrepitous"
-version = "0.0.3"
+version = "0.0.4"
 description = "A fork of Tolki's parser for Leaguepedia data."
 authors = ["ThomasBP <barrepitousthomas@gmail.com>", "Tolki <gary.mialaret@gmail.com>"]
 license = "MIT"
-repository = "https://github.com/mrtolkien/leaguepedia_parser"
+repository = "https://github.com/thomasbarrepitous/leaguepedia_parser"
 
 [tool.poetry.dependencies]
 python = ">=3.9,<4.0"
