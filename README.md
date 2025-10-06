@@ -1,13 +1,36 @@
-# leaguepedia_parser
+# leaguepedia_parser - Enhanced Edition
 
-[![Generic badge](https://img.shields.io/github/workflow/status/mrtolkien/leaguepedia_parser/Python%20application)](https://shields.io/)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
+[![Features](https://img.shields.io/badge/features-6_modules-green.svg)](#features)
 
-A parser for Leaguepedia focused on accessing esports data including games, tournaments, standings, champions, items, and roster changes.
+A **comprehensive** Leaguepedia parser providing easy access to League of Legends esports data. This enhanced fork extends the original with extensive coverage of standings, champions, items, and roster changes.
+
+## ✨ Features
+
+**Enhanced beyond the original with:**
+- 🏆 **Tournament Standings** - Team rankings, win rates, series/game statistics
+- 🎮 **Champion Data** - All champions with attributes, stats, and filtering
+- ⚔️ **Items Database** - Complete item catalog with stats and tier filtering  
+- 👥 **Roster Changes** - Player transfers, team history, and timeline tracking
+
+**Plus all original functionality:**
+- 🎯 Games & match details with picks/bans
+- 🏟️ Tournament & regional data
+- 👤 Teams & player information
 
 ## Install
 
-`pip install leaguepedia_parser_thomasbarrepitous`
+```bash
+# With pip
+pip install leaguepedia_parser_thomasbarrepitous
+
+# With Poetry
+poetry add leaguepedia_parser_thomasbarrepitous
+
+# Quick verification
+python -c "import leaguepedia_parser_thomasbarrepitous as lp; print('✅ Import successful')"
+```
 
 ## Demo
 
@@ -61,4 +84,44 @@ recent_moves = lp.get_recent_roster_changes(days=30)
 # [RosterChange(player='Caps', direction='Leave', team='G2', date=2024-11-15), ...]
 ```
 
-More usage examples can be found in the [`tests` folder](https://github.com/thomasbarrepitous/leaguepedia_parser/tree/master/tests).
+## 🎯 Common Use Cases
+
+```python
+# Tournament Analysis
+standings = lp.get_tournament_standings("LCK/2024 Season/Summer Season")
+top_team = standings[0].team
+roster = lp.get_team_roster_changes(top_team)
+
+# Meta Research  
+marksmen = lp.get_champions_by_attributes("Marksman")
+crit_items = lp.search_items_by_stat("Crit")
+
+# Transfer Tracking
+recent_moves = lp.get_recent_roster_changes(days=7)
+team_additions = lp.get_roster_additions(team="T1")
+```
+
+## 📋 Data Types
+
+| Module | Returns | Key Properties |
+|--------|---------|----------------|
+| **Games** | `Game`, `GameDetails` | teams, winner, date, picks_bans |
+| **Standings** | `Standing` | team, place, win_rate, total_games |
+| **Champions** | `Champion` | name, attributes, is_ranged, attack_range |
+| **Items** | `Item` | name, tier, provides_ad/ap, total_cost |
+| **Roster** | `RosterChange` | player, team, direction, is_addition |
+
+## 📚 More Information
+
+- **Examples**: Comprehensive usage examples in the [`tests` folder](https://github.com/thomasbarrepitous/leaguepedia_parser/tree/master/tests)
+- **Development**: See [CLAUDE.md](CLAUDE.md) for development commands and setup
+- **Original**: Based on [mrtolkien/leaguepedia_parser](https://github.com/mrtolkien/leaguepedia_parser)
+- **Rate Limits**: Leaguepedia API has rate limits - the library handles basic throttling
+
+## 🤝 Contributing
+
+This enhanced fork welcomes contributions! Areas of interest:
+- Additional data parsers (bans, statistics, etc.)
+- Performance optimizations  
+- Better error handling and retry logic
+- Documentation improvements
