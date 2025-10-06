@@ -92,7 +92,9 @@ class Item:
     @property
     def provides_ad(self) -> bool:
         """Returns True if item provides attack damage."""
-        return bool((self.ad and self.ad > 0) or (self.attack_damage and self.attack_damage > 0))
+        return bool(
+            (self.ad and self.ad > 0) or (self.attack_damage and self.attack_damage > 0)
+        )
 
     @property
     def provides_ap(self) -> bool:
@@ -112,7 +114,9 @@ class Item:
     @property
     def provides_health(self) -> bool:
         """Returns True if item provides health."""
-        return bool((self.health and self.health > 0) or (self.bonus_hp and self.bonus_hp > 0))
+        return bool(
+            (self.health and self.health > 0) or (self.bonus_hp and self.bonus_hp > 0)
+        )
 
     @property
     def provides_mana(self) -> bool:
@@ -247,10 +251,10 @@ def get_item_by_name(item_name: str) -> Optional[Item]:
 
 def get_items_by_tier(tier: str) -> List[Item]:
     """Returns all items of a specific tier.
-    
+
     Args:
         tier: Item tier (e.g., "Basic", "Epic", "Legendary", "Mythic")
-    
+
     Returns:
         List of Item objects with the specified tier
     """
@@ -264,7 +268,7 @@ def get_ad_items() -> List[Item]:
 
 
 def get_ap_items() -> List[Item]:
-    """Returns all items that provide ability power.""" 
+    """Returns all items that provide ability power."""
     items = get_items()
     return [item for item in items if item.provides_ap]
 
@@ -311,7 +315,7 @@ def search_items_by_stat(
         List of items matching the stat criteria
     """
     items = get_items(**kwargs)
-    
+
     results = []
     for item in items:
         if provides_ad is not None and item.provides_ad != provides_ad:
@@ -327,5 +331,5 @@ def search_items_by_stat(
         if provides_mana is not None and item.provides_mana != provides_mana:
             continue
         results.append(item)
-    
+
     return results

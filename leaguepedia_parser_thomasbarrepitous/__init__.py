@@ -59,3 +59,13 @@ from leaguepedia_parser_thomasbarrepitous.parsers.roster_changes_parser import (
     get_roster_removals,
     get_retirements,
 )
+
+# Contracts
+from leaguepedia_parser_thomasbarrepitous.parsers.contracts_parser import (
+    get_contracts,
+    get_player_contracts,
+    get_team_contracts,
+    get_active_contracts,
+    get_expiring_contracts,
+    get_contract_removals,
+)

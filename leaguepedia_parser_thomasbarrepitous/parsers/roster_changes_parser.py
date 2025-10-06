@@ -208,7 +208,9 @@ def get_roster_changes(
 
         if tournament:
             escaped_tournament = tournament.replace("'", "''")
-            where_conditions.append(f"RosterChanges.Tournaments LIKE '%{escaped_tournament}%'")
+            where_conditions.append(
+                f"RosterChanges.Tournaments LIKE '%{escaped_tournament}%'"
+            )
 
         if start_date:
             where_conditions.append(f"RosterChanges.Date_Sort >= '{start_date}'")

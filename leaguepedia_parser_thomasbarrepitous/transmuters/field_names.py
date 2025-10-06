@@ -132,7 +132,7 @@ standings_fields = {
 # Champions
 champions_fields = {
     "Name",
-    "Title", 
+    "Title",
     "ReleaseDate",
     "BE",
     "RP",
@@ -169,7 +169,7 @@ items_fields = {
     "RiotId",
     "Recipe",
     "Cost",
-    "TotalCost", 
+    "TotalCost",
     "AD",
     "LifeSteal",
     "Health",
@@ -207,11 +207,11 @@ items_fields = {
 # Roster Changes
 roster_changes_fields = {
     "Date_Sort",
-    "Player", 
+    "Player",
     "Direction",
     "Team",
     "RolesIngame",
-    "RolesStaff", 
+    "RolesStaff",
     "Roles",
     "RoleDisplay",
     "Role",
@@ -229,4 +229,14 @@ roster_changes_fields = {
     "NewsId",
     "RosterChangeId",
     "N_LineInNews",
+}
+
+# Contracts
+contracts_fields = {
+    "Player",
+    "Team",
+    "ContractEnd",
+    "ContractEndText",
+    "IsRemoval",
+    "NewsId",
 }

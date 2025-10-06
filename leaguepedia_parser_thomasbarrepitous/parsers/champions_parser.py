@@ -83,7 +83,7 @@ class Champion:
 
     @property
     def is_ranged(self) -> Optional[bool]:
-        """Returns True if champion is ranged (attack range > 200), False if melee.""" 
+        """Returns True if champion is ranged (attack range > 200), False if melee."""
         if self.attack_range is not None:
             return self.attack_range > 200
         return None
@@ -92,7 +92,7 @@ class Champion:
     def attributes_list(self) -> list:
         """Returns attributes as a list."""
         if self.attributes:
-            return [attr.strip() for attr in self.attributes.split(',') if attr.strip()]
+            return [attr.strip() for attr in self.attributes.split(",") if attr.strip()]
         return []
 
 
@@ -175,7 +175,9 @@ def get_champions(
 
         if attributes:
             escaped_attributes = attributes.replace("'", "''")
-            where_conditions.append(f"Champions.Attributes LIKE '%{escaped_attributes}%'")
+            where_conditions.append(
+                f"Champions.Attributes LIKE '%{escaped_attributes}%'"
+            )
 
         where_clause = " AND ".join(where_conditions) if where_conditions else None
 

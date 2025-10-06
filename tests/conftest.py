@@ -175,6 +175,44 @@ class TestDataFactory:
                 'N_LineInNews': '1'
             }
         ]
+    
+    @staticmethod
+    def create_contracts_mock_response() -> List[Dict[str, Any]]:
+        """Create mock API response for contracts data."""
+        return [
+            {
+                'Player': 'Faker',
+                'Team': 'T1',
+                'ContractEnd': '2025-12-31T23:59:59Z',
+                'ContractEndText': 'December 31, 2025',
+                'IsRemoval': '0',
+                'NewsId': 'CONTRACT001'
+            },
+            {
+                'Player': 'Caps',
+                'Team': 'G2 Esports',
+                'ContractEnd': '2024-11-30T23:59:59Z',
+                'ContractEndText': 'November 30, 2024',
+                'IsRemoval': '0',
+                'NewsId': 'CONTRACT002'
+            },
+            {
+                'Player': 'Jankos',
+                'Team': 'G2 Esports',
+                'ContractEnd': '2023-12-31T23:59:59Z',
+                'ContractEndText': 'December 31, 2023',
+                'IsRemoval': '1',
+                'NewsId': 'CONTRACT003'
+            },
+            {
+                'Player': 'Canyon',
+                'Team': 'DAMWON KIA',
+                'ContractEnd': '2026-06-15T23:59:59Z',
+                'ContractEndText': 'June 15, 2026',
+                'IsRemoval': '0',
+                'NewsId': 'CONTRACT004'
+            }
+        ]
 
 
 # Shared Fixtures
@@ -213,6 +251,12 @@ def items_mock_data(test_data_factory):
 def roster_changes_mock_data(test_data_factory):
     """Provide roster changes mock data."""
     return test_data_factory.create_roster_changes_mock_response()
+
+
+@pytest.fixture
+def contracts_mock_data(test_data_factory):
+    """Provide contracts mock data."""
+    return test_data_factory.create_contracts_mock_response()
 
 
 # Constants for tests
