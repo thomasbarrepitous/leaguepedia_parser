@@ -14,6 +14,7 @@ class ScoreboardPlayer:
 
     Attributes:
         overview_page: Tournament overview page (String)
+        name: Player name (String)
         link: Player identifier with disambiguation (String)
         champion: Champion played (String)
         kills: Player eliminations (Integer)
@@ -57,6 +58,7 @@ class ScoreboardPlayer:
     """
 
     overview_page: Optional[str] = None
+    name: Optional[str] = None
     link: Optional[str] = None
     champion: Optional[str] = None
     kills: Optional[int] = None
@@ -221,6 +223,7 @@ def _parse_scoreboard_player_data(data: dict) -> ScoreboardPlayer:
 
     return ScoreboardPlayer(
         overview_page=data.get("OverviewPage"),
+        name=data.get("Name"),
         link=data.get("Link"),
         champion=data.get("Champion"),
         kills=parse_int(data.get("Kills")),
@@ -246,7 +249,7 @@ def _parse_scoreboard_player_data(data: dict) -> ScoreboardPlayer:
         player_win=data.get("PlayerWin"),
         datetime_utc=parse_datetime(data.get("DateTime_UTC")),
         dst=data.get("DST"),
-        tournament=data.get("Tournament"),
+        tournament=data.get("Tournament") or data.get("OverviewPage"),
         role=data.get("Role"),
         role_number=parse_int(data.get("Role_Number")),
         ingame_role=data.get("IngameRole"),
@@ -277,8 +280,8 @@ def get_scoreboard_players(
     """Returns player performance statistics from ScoreboardPlayers table.
 
     Args:
-        tournament: Tournament to filter by
-        player: Player name to filter by
+        tournament: Tournament to filter by (uses OverviewPage field internally)
+        player: Player name to filter by (searches in Link field)
         team: Team name to filter by
         champion: Champion name to filter by
         game_id: Specific game ID to filter by
@@ -291,6 +294,12 @@ def get_scoreboard_players(
 
     Raises:
         RuntimeError: If the Leaguepedia query fails
+        
+    Note:
+        The tournament parameter filters using the OverviewPage field rather than 
+        the Tournament field, as the Tournament field is often empty in the 
+        ScoreboardPlayers table. The tournament data in returned objects is 
+        populated from OverviewPage when Tournament is empty.
     """
     try:
         where_conditions = []
@@ -298,7 +307,7 @@ def get_scoreboard_players(
         if tournament:
             escaped_tournament = tournament.replace("'", "''")
             where_conditions.append(
-                f"ScoreboardPlayers.Tournament='{escaped_tournament}'"
+                f"ScoreboardPlayers.OverviewPage='{escaped_tournament}'"
             )
 
         if player:
@@ -329,7 +338,7 @@ def get_scoreboard_players(
 
         players = leaguepedia.query(
             tables="ScoreboardPlayers",
-            fields=",".join(scoreboard_players_fields),
+            fields=",".join(f"ScoreboardPlayers.{field}" for field in scoreboard_players_fields),
             where=where_clause,
             order_by="ScoreboardPlayers.DateTime_UTC DESC",
             **clean_kwargs,

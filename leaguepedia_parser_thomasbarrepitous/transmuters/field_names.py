@@ -244,6 +244,7 @@ contracts_fields = {
 # ScoreboardPlayers
 scoreboard_players_fields = {
     "OverviewPage",
+    "Name",
     "Link",
     "Champion",
     "Kills",

@@ -82,6 +82,7 @@ def get_contracts(
     team: str = None,
     include_removals: bool = False,
     active_only: bool = False,
+    limit: int = None,
     **kwargs,
 ) -> List[Contract]:
     """Returns contract information from Leaguepedia.
@@ -124,15 +125,22 @@ def get_contracts(
 
         where_clause = " AND ".join(where_conditions) if where_conditions else None
 
+        # Remove limit from kwargs to avoid conflicts with leaguepedia.query internal limit
+        clean_kwargs = kwargs.copy()
+        clean_kwargs.pop('limit', None)
+
         contracts = leaguepedia.query(
             tables="Contracts",
             fields=",".join(contracts_fields),
             where=where_clause,
             order_by="Contracts.ContractEnd DESC",
-            **kwargs,
+            **clean_kwargs,
         )
 
-        return [_parse_contract_data(contract) for contract in contracts]
+        parsed_contracts = [_parse_contract_data(contract) for contract in contracts]
+        
+        # Apply limit after parsing if specified
+        return parsed_contracts[:limit] if limit else parsed_contracts
 
     except Exception as e:
         raise RuntimeError(f"Failed to fetch contracts: {str(e)}")

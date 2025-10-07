@@ -321,9 +321,9 @@ class TestScoreboardPlayerQueries:
             player.tournament == "LCK/2024 Season/Summer Season" for player in players
         )
 
-        # Verify the where clause was used
+        # Verify the where clause was used (should use OverviewPage, not Tournament)
         call_args = mock_leaguepedia_query.call_args
-        assert "ScoreboardPlayers.Tournament='LCK/2024 Season/Summer Season'" in call_args[1]["where"]
+        assert "ScoreboardPlayers.OverviewPage='LCK/2024 Season/Summer Season'" in call_args[1]["where"]
 
     @pytest.mark.integration
     def test_get_scoreboard_players_by_player(

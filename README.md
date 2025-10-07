@@ -184,7 +184,7 @@ azir_win_rate = sum(1 for p in azir_performance if p.did_win) / len(azir_perform
 
 # Compare role effectiveness
 mid_players = lp.get_role_performance_comparison("LCK/2024 Season/Summer Season", "Mid")
-support_players = lp.get_role_performance_comparison("LCK/2024 Season/Summer Season", "Support")
+support_players = lp.get_role_performance_comparison("LEC/2024 Season/Summer Season", "Support")
 
 # Item meta analysis
 marksmen = lp.get_champions_by_attributes("Marksman")
@@ -213,7 +213,7 @@ crit_items = lp.search_items_by_stat("Crit")
 ```python
 # ✅ GOOD: Use filters and limits for responsive queries
 faker_recent = lp.get_player_match_history("Faker", limit=10)
-t1_summer = lp.get_team_match_performance("T1", tournament="LCK/2024 Season/Summer Season")
+t1_lck = lp.get_team_match_performance("T1", tournament="LCK/2024 Season/Summer Season")
 specific_game = lp.get_game_scoreboard("ESPORTSTMNT01_2024_LCK_Game123")
 
 # ⚠️ SLOW: Large unbounded queries (10+ years of data)
