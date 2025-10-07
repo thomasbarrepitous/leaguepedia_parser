@@ -1,14 +1,14 @@
 [tool.poetry]
 name = "leaguepedia_parser_thomasbarrepitous"
-version = "0.0.6"
-description = "Comprehensive Leaguepedia parser for League of Legends esports data with enhanced standings, champions, items, and roster tracking"
+version = "0.1.0"
+description = "Advanced League of Legends esports analytics library with player performance statistics, contract tracking, and comprehensive tournament data"
 authors = ["ThomasBP <barrepitousthomas@gmail.com>", "Tolki <gary.mialaret@gmail.com>"]
 license = "MIT"
 readme = "README.md"
 homepage = "https://github.com/thomasbarrepitous/leaguepedia_parser"
 repository = "https://github.com/thomasbarrepitous/leaguepedia_parser"
 documentation = "https://github.com/thomasbarrepitous/leaguepedia_parser#readme"
-keywords = ["leaguepedia", "league-of-legends", "esports", "data-parser", "gaming", "riot-games", "tournaments", "statistics"]
+keywords = ["leaguepedia", "league-of-legends", "esports", "analytics", "performance-statistics", "player-data", "gaming", "riot-games", "tournaments", "contracts", "kda", "fantasy-sports"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
