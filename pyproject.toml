@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "leaguepedia_parser_thomasbarrepitous"
-version = "0.0.5"
+version = "0.0.6"
 description = "Comprehensive Leaguepedia parser for League of Legends esports data with enhanced standings, champions, items, and roster tracking"
 authors = ["ThomasBP <barrepitousthomas@gmail.com>", "Tolki <gary.mialaret@gmail.com>"]
 license = "MIT"
