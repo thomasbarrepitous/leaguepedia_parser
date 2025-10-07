@@ -69,3 +69,14 @@ from leaguepedia_parser_thomasbarrepitous.parsers.contracts_parser import (
     get_expiring_contracts,
     get_contract_removals,
 )
+
+# ScoreboardPlayers - Match Performance Statistics
+from leaguepedia_parser_thomasbarrepitous.parsers.scoreboard_players_parser import (
+    get_scoreboard_players,
+    get_player_match_history,
+    get_team_match_performance,
+    get_champion_performance_stats,
+    get_game_scoreboard,
+    get_tournament_mvp_candidates,
+    get_role_performance_comparison,
+)

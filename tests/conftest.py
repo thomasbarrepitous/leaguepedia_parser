@@ -213,6 +213,141 @@ class TestDataFactory:
                 'NewsId': 'CONTRACT004'
             }
         ]
+    
+    @staticmethod
+    def create_scoreboard_players_mock_response() -> List[Dict[str, Any]]:
+        """Create mock API response for scoreboard players data."""
+        return [
+            {
+                'OverviewPage': 'LCK/2024 Season/Summer Season',
+                'Link': 'Faker',
+                'Champion': 'Azir',
+                'Kills': '8',
+                'Deaths': '1',
+                'Assists': '12',
+                'SummonerSpells': 'Flash,Teleport',
+                'Gold': '18500',
+                'CS': '285',
+                'DamageToChampions': '32000',
+                'VisionScore': '45',
+                'Items': 'Nashor\'s Tooth;Rabadon\'s Deathcap;Zhonya\'s Hourglass;Void Staff;Morellonomicon;Sorcerer\'s Shoes',
+                'Trinket': 'Farsight Alteration',
+                'KeystoneMastery': 'Lethal Tempo',
+                'KeystoneRune': 'Lethal Tempo',
+                'PrimaryTree': 'Precision',
+                'SecondaryTree': 'Inspiration',
+                'Runes': 'Lethal Tempo, Presence of Mind, Legend: Alacrity, Cut Down, Magical Footwear, Biscuit Delivery',
+                'TeamKills': '22',
+                'TeamGold': '85000',
+                'Team': 'T1',
+                'TeamVs': 'GenG',
+                'Time': '2024-08-15T10:30:00Z',
+                'PlayerWin': 'Yes',
+                'DateTime_UTC': '2024-08-15T10:30:00Z',
+                'DST': 'No',
+                'Tournament': 'LCK/2024 Season/Summer Season',
+                'Role': 'Mid',
+                'Role_Number': '3',
+                'IngameRole': 'Middle',
+                'Side': '1',
+                'UniqueLine': 'T1_Mid',
+                'UniqueLineVs': 'GenG_Mid',
+                'UniqueRole': 'T1_Mid_1',
+                'UniqueRoleVs': 'GenG_Mid_1',
+                'GameId': 'GAME001',
+                'MatchId': 'MATCH001',
+                'GameTeamId': 'T1_GAME001',
+                'GameRoleId': 'T1_Mid_GAME001',
+                'GameRoleIdVs': 'GenG_Mid_GAME001',
+                'StatsPage': 'T1_vs_GenG_Game1'
+            },
+            {
+                'OverviewPage': 'LCK/2024 Season/Summer Season',
+                'Link': 'Chovy',
+                'Champion': 'Orianna',
+                'Kills': '4',
+                'Deaths': '3',
+                'Assists': '8',
+                'SummonerSpells': 'Flash,Teleport',
+                'Gold': '16200',
+                'CS': '295',
+                'DamageToChampions': '28500',
+                'VisionScore': '38',
+                'Items': 'Liandry\'s Anguish;Rabadon\'s Deathcap;Zhonya\'s Hourglass;Void Staff;Seraph\'s Embrace;Sorcerer\'s Shoes',
+                'Trinket': 'Farsight Alteration',
+                'KeystoneMastery': 'Phase Rush',
+                'KeystoneRune': 'Phase Rush',
+                'PrimaryTree': 'Sorcery',
+                'SecondaryTree': 'Precision',
+                'Runes': 'Phase Rush, Manaflow Band, Transcendence, Gathering Storm, Presence of Mind, Last Stand',
+                'TeamKills': '15',
+                'TeamGold': '72000',
+                'Team': 'GenG',
+                'TeamVs': 'T1',
+                'Time': '2024-08-15T10:30:00Z',
+                'PlayerWin': 'No',
+                'DateTime_UTC': '2024-08-15T10:30:00Z',
+                'DST': 'No',
+                'Tournament': 'LCK/2024 Season/Summer Season',
+                'Role': 'Mid',
+                'Role_Number': '3',
+                'IngameRole': 'Middle',
+                'Side': '2',
+                'UniqueLine': 'GenG_Mid',
+                'UniqueLineVs': 'T1_Mid',
+                'UniqueRole': 'GenG_Mid_1',
+                'UniqueRoleVs': 'T1_Mid_1',
+                'GameId': 'GAME001',
+                'MatchId': 'MATCH001',
+                'GameTeamId': 'GenG_GAME001',
+                'GameRoleId': 'GenG_Mid_GAME001',
+                'GameRoleIdVs': 'T1_Mid_GAME001',
+                'StatsPage': 'T1_vs_GenG_Game1'
+            },
+            {
+                'OverviewPage': 'LCK/2024 Season/Summer Season',
+                'Link': 'Gumayusi',
+                'Champion': 'Jinx',
+                'Kills': '12',
+                'Deaths': '2',
+                'Assists': '8',
+                'SummonerSpells': 'Flash,Heal',
+                'Gold': '22000',
+                'CS': '320',
+                'DamageToChampions': '45000',
+                'VisionScore': '25',
+                'Items': 'Kraken Slayer;Infinity Edge;Lord Dominik\'s Regards;Phantom Dancer;Bloodthirster;Berserker\'s Greaves',
+                'Trinket': 'Farsight Alteration',
+                'KeystoneMastery': 'Lethal Tempo',
+                'KeystoneRune': 'Lethal Tempo',
+                'PrimaryTree': 'Precision',
+                'SecondaryTree': 'Domination',
+                'Runes': 'Lethal Tempo, Overheal, Legend: Bloodline, Cut Down, Taste of Blood, Treasure Hunter',
+                'TeamKills': '22',
+                'TeamGold': '85000',
+                'Team': 'T1',
+                'TeamVs': 'GenG',
+                'Time': '2024-08-15T10:30:00Z',
+                'PlayerWin': 'Yes',
+                'DateTime_UTC': '2024-08-15T10:30:00Z',
+                'DST': 'No',
+                'Tournament': 'LCK/2024 Season/Summer Season',
+                'Role': 'Bot',
+                'Role_Number': '1',
+                'IngameRole': 'Bottom',
+                'Side': '1',
+                'UniqueLine': 'T1_Bot',
+                'UniqueLineVs': 'GenG_Bot',
+                'UniqueRole': 'T1_Bot_1',
+                'UniqueRoleVs': 'GenG_Bot_1',
+                'GameId': 'GAME001',
+                'MatchId': 'MATCH001',
+                'GameTeamId': 'T1_GAME001',
+                'GameRoleId': 'T1_Bot_GAME001',
+                'GameRoleIdVs': 'GenG_Bot_GAME001',
+                'StatsPage': 'T1_vs_GenG_Game1'
+            }
+        ]
 
 
 # Shared Fixtures
@@ -257,6 +392,12 @@ def roster_changes_mock_data(test_data_factory):
 def contracts_mock_data(test_data_factory):
     """Provide contracts mock data."""
     return test_data_factory.create_contracts_mock_response()
+
+
+@pytest.fixture
+def scoreboard_players_mock_data(test_data_factory):
+    """Provide scoreboard players mock data."""
+    return test_data_factory.create_scoreboard_players_mock_response()
 
 
 # Constants for tests
