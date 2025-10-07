@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "leaguepedia_parser_thomasbarrepitous"
-version = "0.1.0"
+version = "0.1.1"
 description = "Advanced League of Legends esports analytics library with player performance statistics, contract tracking, and comprehensive tournament data"
 authors = ["ThomasBP <barrepitousthomas@gmail.com>", "Tolki <gary.mialaret@gmail.com>"]
 license = "MIT"
